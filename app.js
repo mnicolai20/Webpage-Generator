@@ -11,18 +11,136 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
 
-const initialQuestion = [
+const baseQuestion = [
     {
         type: "list",
         name: "employeeType",
         message: "Which type of team member would you like to add?",
         choices: ["Engineer", "Intern", "I would not like to add more team members"]
     }
-]
+];
 
+const managerQuestions = [
+    {
+        type: "input",
+        name: "managerName",
+        message: "What is your manager's name?"
+    },
+    
+    {
+        type: "input",
+        name: "managerID",
+        message: "What is your manager's ID?"
+    },
+    
+    {
+        type: "input",
+        name: "managerEmail",
+        message: "What is your manager's email"
+    },
+    
+    {
+        type: "input",
+        name: "managerOffice",
+        message: "What is your manager's office number?"
+    }
+];
+
+const internQuestions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is your intern's name?"
+    },
+    
+    {
+        type: "input",
+        name: "ID",
+        message: "What is your intern's ID?"
+    },
+    
+    {
+        type: "input",
+        name: "email",
+        message: "What is your intern's email?"
+    },
+    
+    {
+        type: "input",
+        name: "school",
+        message: "What school does your intern attend?"
+    }
+];
+
+const engineerQuestions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is your engineer's name?"
+    },
+    
+    {
+        type: "input",
+        name: "ID",
+        message: "What is your engineer's ID?"
+    },
+    
+    {
+        type: "input",
+        name: "email",
+        message: "What is your engineer's email?"
+    },
+    
+    {
+        type: "input",
+        name: "github",
+        message: "What is your engineer's github username?"
+    }
+];
+
+// Write code to use inquirer to gather information about the development team members,
+// and to create objects for each team member (using the correct classes as blueprints!)
+
+function init() {
+    inquirer.prompt(managerQuestions)
+    .then( function (userResponse) {
+        askBaseQuestion();
+    })
+    
+};
+// Need to figure out how to have the base question run after engineer questions and intern questions
+function askBaseQuestion(){
+    inquirer.prompt(baseQuestion)
+    .then(function(questionResponse){
+    if(questionResponse.employeeType == "Engineer") {
+        askEngineerQuestions();
+    }
+    else if(questionResponse.employeeType == "Intern") {
+        askInternQuestions();
+    }
+    else if(questionResponse.employeeType == "I would not like to add more team members"){
+        // Need to create a function to add all response information to html
+        createOutput();
+    }
+})
+}
+
+function askEngineerQuestions(){
+    console.log("Made it to engineering questions");
+    askBaseQuestion();
+};
+
+function askInternQuestions(){
+    console.log("Made it to intern questions");
+    askBaseQuestion();
+};
+
+function createOutput(){
+    console.log("Output created");
+}
+
+init()
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
