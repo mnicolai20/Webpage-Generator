@@ -10,7 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-
+const team = [];
 
 const baseQuestion = [
     {
@@ -105,6 +105,8 @@ const engineerQuestions = [
 function init() {
     inquirer.prompt(managerQuestions)
     .then( function (userResponse) {
+        const newManager = new Manager(userResponse.managerOffice, userResponse.managerName, userResponse.managerID, userResponse.managerEmail)
+        team.push(newManager);
         askBaseQuestion();
     })
     
@@ -137,6 +139,7 @@ function askInternQuestions(){
 };
 
 function createOutput(){
+    console.log(team);
     console.log("Output created");
 }
 
