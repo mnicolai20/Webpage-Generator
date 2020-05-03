@@ -105,13 +105,13 @@ const engineerQuestions = [
 function init() {
     inquirer.prompt(managerQuestions)
     .then( function (userResponse) {
-        const newManager = new Manager(userResponse.managerOffice, userResponse.managerName, userResponse.managerID, userResponse.managerEmail)
+        const newManager = new Manager(userResponse.managerOffice, userResponse.managerName, userResponse.managerID, userResponse.managerEmail);
         team.push(newManager);
         askBaseQuestion();
     })
     
 };
-// Need to figure out how to have the base question run after engineer questions and intern questions
+
 function askBaseQuestion(){
     inquirer.prompt(baseQuestion)
     .then(function(questionResponse){
@@ -122,24 +122,35 @@ function askBaseQuestion(){
         askInternQuestions();
     }
     else if(questionResponse.employeeType == "I would not like to add more team members"){
-        // Need to create a function to add all response information to html
         createOutput();
     }
 })
 }
 
 function askEngineerQuestions(){
-    console.log("Made it to engineering questions");
-    askBaseQuestion();
+    inquirer.prompt(engineerQuestions)
+    .then(function (userReponse){
+        const newEngineer = new Engineer(userReponse.name, userReponse.ID, userReponse.email, userReponse.github);
+        team.push(newEngineer);
+        askBaseQuestion();
+    });
 };
 
 function askInternQuestions(){
-    console.log("Made it to intern questions");
-    askBaseQuestion();
+    inquirer.prompt(internQuestions)
+    .then(function (userReponse){
+        const newIntern = new Intern(userReponse.name, userReponse.ID, userReponse.email, userReponse.school);
+        team.push(newIntern);
+        askBaseQuestion();
+    })
 };
 
 function createOutput(){
     console.log(team);
+    if(!fs.existsSync(OUTPUT_DIR)){
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath, render(team), "utf-8")
     console.log("Output created");
 }
 
