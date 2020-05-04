@@ -125,7 +125,7 @@ function askBaseQuestion(){
         createOutput();
     }
 })
-}
+};
 
 function askEngineerQuestions(){
     inquirer.prompt(engineerQuestions)
